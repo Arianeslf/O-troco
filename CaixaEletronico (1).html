@@ -1,0 +1,149 @@
+<html>
+  <head>
+    <script>
+      //  A senha é 3589.
+
+      var saldo = 100.5;
+      let nome = "";
+      let extrato = [];
+
+      function nomeUsuario() {
+        alert("Bem-vindo ao caixa eletrônico");
+        nome = prompt("Digite seu nome: ");
+      }
+
+      function inicio() {
+        var escolha = parseInt(
+          prompt(
+            "Olá, " +
+              nome +
+              "! Bem-vindo ao programa de troco.\n\nSelecione uma opção\n1.) Saldo\n2.) extrato\n3.) Saque\n 4.)Depósito\n 5.)Transferência \n 6.) Sair",
+          ),
+        );
+
+        let senha = prompt("Digite sua senha para acessar as opções:");
+        if (senha !== "3589") {
+          alert("Senha incorreta. Por favor, tente novamente.");
+          inicio();
+          return; // O return é necessário para evitar que o código continue executando após chamar a função inicio() novamente.
+        }
+
+        switch (escolha) {
+          case 1:
+            ver_saldo();
+            break;
+          case 2:
+            ver_extrato();
+            break;
+          case 3:
+            fazer_saque();
+            break;
+          case 4:
+            fazer_deposito();
+            break;
+          case 5:
+            fazer_transferencia();
+            break;
+          case 6:
+            sair();
+            break;
+          default:
+            erro();
+        }
+      }
+
+      function ver_saldo() {
+        alert("Seu saldo atual é: R$ " + saldo.toFixed(2));
+        inicio();
+      }
+
+      function fazer_deposito() {
+        var deposito = parseFloat(prompt("Qual o valor para depósito?"));
+
+        if (isNaN(deposito) || deposito <= 0) {
+          alert("Por favor, informe um número válido.");
+          fazer_deposito();
+        } else {
+          saldo += deposito;
+          extrato.push("Depósito: R$ " + deposito.toFixed(2)); //toFixed(2) para formatar o número com 2 casas decimais
+          ver_saldo();
+        }
+      }
+
+      function fazer_saque() {
+        var saque = parseFloat(prompt("Qual o valor para saque?"));
+
+        if (isNaN(saque) || saque <= 0) {
+          alert("Por favor, informe um número válido.");
+          fazer_saque();
+        } else if (saque > saldo) {
+          alert(
+            "Saldo insuficiente para realizar o saque. Seu saldo atual é: R$ " +
+              saldo.toFixed(2),
+          );
+          fazer_saque();
+        } else {
+          saldo -= saque;
+          extrato.push("Saque: R$ " + saque.toFixed(2));
+          ver_saldo();
+        }
+      }
+
+      function fazer_transferencia() {
+        var valor = parseFloat(prompt("Qual o valor para transferência?"));
+
+        if (isNaN(valor) || valor <= 0) {
+          alert("Por favor, informe um número válido.");
+          fazer_transferencia();
+        } else if (valor > saldo) {
+          alert(
+            "Saldo insuficiente para realizar a transferência. Seu saldo atual é: R$ " +
+              saldo.toFixed(2),
+          );
+          fazer_transferencia();
+        } else {
+          var destinatario = prompt(
+            "Digite o numero da conta do destinatário:",
+          );
+          while (destinatario.trim() === "" || isNaN(destinatario)) {
+            alert("Por favor, informe um número de conta válido.");
+            destinatario = prompt("Digite o numero da conta do destinatário:");
+          }
+          saldo -= valor;
+          extrato.push(
+            "Transferência: R$ " + valor.toFixed(2) + " para " + destinatario,
+          );
+          ver_saldo();
+        }
+      }
+
+      function ver_extrato() {
+        if (extrato.length === 0) {
+          alert("Nenhuma movimentação.");
+        } else {
+          alert("Extrato:\n" + extrato.join("\n"));
+        }
+        inicio();
+      }
+
+      function erro() {
+        alert("Por favor, informe um número entre 1 a 6.");
+        inicio();
+      }
+
+      function sair() {
+        var confirma = confirm("Você deseja sair?");
+        if (confirma) {
+          alert(nome + ", foi um prazer ter você por aqui!");
+        } else {
+          inicio();
+        }
+      }
+
+      nomeUsuario();
+      inicio();
+    </script>
+  </head>
+
+  <body></body>
+</html>
